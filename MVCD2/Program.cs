@@ -8,6 +8,7 @@ namespace MVCD2
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession(c=> c.IdleTimeout= TimeSpan.FromMinutes(50));
 
             var app = builder.Build();
 
@@ -19,7 +20,7 @@ namespace MVCD2
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
             app.MapControllerRoute(

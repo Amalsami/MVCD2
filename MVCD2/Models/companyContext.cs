@@ -21,6 +21,9 @@ namespace MVCD2.Models
             modelBuilder.Entity<location>().HasKey("DeptNumber", "Location");
             modelBuilder.Entity<workOn>().HasKey("ESSN", "projectNum");
             modelBuilder.Entity<employee>().HasOne(s => s.SuperVisor).WithMany(s => s.Employees);
+            modelBuilder.Entity<Department>().HasOne(d => d.employee).WithOne(e => e.Department);
+            modelBuilder.Entity<Department>().HasMany(d => d.employees).WithOne(e => e.Department2);
+
         }
         public DbSet<Department> departments { get; set; }
         public DbSet<employee> employees { get; set; }

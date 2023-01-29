@@ -27,5 +27,13 @@ namespace MVCD2.Models
         public employee? SuperVisor { get; set; }
 
         public List<employee>? Employees { get; set; }
+
+        [ForeignKey("Department")]
+        public int? deptid { get; set; }
+
+        public Department? Department { get; set; }
+
+        public Department? Department2 { get; set; }
+
     }
 }

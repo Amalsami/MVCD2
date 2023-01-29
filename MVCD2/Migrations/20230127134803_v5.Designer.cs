@@ -4,6 +4,7 @@ using MVCD2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCD2.Migrations
 {
     [DbContext(typeof(companyContext))]
-    partial class companyContextModelSnapshot : ModelSnapshot
+    [Migration("20230127134803_v5")]
+    partial class v5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,10 @@ namespace MVCD2.Migrations
 
                     b.HasKey("Number");
 
+                    b.HasIndex("employeeSSN")
+                        .IsUnique()
+                        .HasFilter("[employeeSSN] IS NOT NULL");
+
                     b.ToTable("departments");
                 });
 
@@ -55,9 +62,6 @@ namespace MVCD2.Migrations
                     b.Property<int>("ESSN")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EmployeeSSN")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -69,7 +73,7 @@ namespace MVCD2.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("EmployeeSSN");
+                    b.HasIndex("ESSN");
 
                     b.ToTable("dependents");
                 });
@@ -117,10 +121,6 @@ namespace MVCD2.Migrations
                     b.HasIndex("Department2Number");
 
                     b.HasIndex("SuperVisorSSN");
-
-                    b.HasIndex("deptid")
-                        .IsUnique()
-                        .HasFilter("[deptid] IS NOT NULL");
 
                     b.ToTable("employees");
                 });
@@ -183,11 +183,22 @@ namespace MVCD2.Migrations
                     b.ToTable("workOns");
                 });
 
+            modelBuilder.Entity("MVCD2.Models.Department", b =>
+                {
+                    b.HasOne("MVCD2.Models.employee", "employee")
+                        .WithOne("Department")
+                        .HasForeignKey("MVCD2.Models.Department", "employeeSSN");
+
+                    b.Navigation("employee");
+                });
+
             modelBuilder.Entity("MVCD2.Models.dependents", b =>
                 {
                     b.HasOne("MVCD2.Models.employee", "Employee")
                         .WithMany("Dependents")
-                        .HasForeignKey("EmployeeSSN");
+                        .HasForeignKey("ESSN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Employee");
                 });
@@ -201,12 +212,6 @@ namespace MVCD2.Migrations
                     b.HasOne("MVCD2.Models.employee", "SuperVisor")
                         .WithMany("Employees")
                         .HasForeignKey("SuperVisorSSN");
-
-                    b.HasOne("MVCD2.Models.Department", "Department")
-                        .WithOne("employee")
-                        .HasForeignKey("MVCD2.Models.employee", "deptid");
-
-                    b.Navigation("Department");
 
                     b.Navigation("Department2");
 
@@ -258,13 +263,13 @@ namespace MVCD2.Migrations
 
                     b.Navigation("Projects");
 
-                    b.Navigation("employee");
-
                     b.Navigation("employees");
                 });
 
             modelBuilder.Entity("MVCD2.Models.employee", b =>
                 {
+                    b.Navigation("Department");
+
                     b.Navigation("Dependents");
 
                     b.Navigation("Employees");

@@ -14,7 +14,7 @@ namespace MVCD2.Models
         public DateTime? BirthDate { get; set; }
         public string? Relationship { get; set; }
 
-        [ForeignKey("Employee")]
+        [ForeignKey("employee")]
         public int ESSN { get; set; }
         public employee? Employee { get; set; }
     }
