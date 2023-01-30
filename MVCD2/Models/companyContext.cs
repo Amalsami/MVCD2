@@ -20,14 +20,15 @@ namespace MVCD2.Models
         {
             modelBuilder.Entity<location>().HasKey("DeptNumber", "Location");
             modelBuilder.Entity<workOn>().HasKey("ESSN", "projectNum");
-            modelBuilder.Entity<employee>().HasOne(s => s.SuperVisor).WithMany(s => s.Employees);
-            modelBuilder.Entity<Department>().HasOne(d => d.employee).WithOne(e => e.Department);
-            modelBuilder.Entity<Department>().HasMany(d => d.employees).WithOne(e => e.Department2);
 
+            modelBuilder.Entity<employee>().HasOne(s => s.SuperVisor).WithMany(s => s.Employees);
+            modelBuilder.Entity<employee>().HasOne(s => s.deptWork).WithMany(e => e.EmpWork);
+            modelBuilder.Entity<employee>().HasOne(s => s.deptManage).WithOne(e => e.EmpManage);
         }
+
         public DbSet<Department> departments { get; set; }
         public DbSet<employee> employees { get; set; }
-        public DbSet<dependents> dependents { get; set; }
+        public DbSet<dependent> dependents { get; set; }
         public DbSet<location> locations { get; set; }
         public DbSet<project> projects { get; set; }
         public DbSet<workOn> workOns { get; set; }

@@ -22,18 +22,19 @@ namespace MVCD2.Models
         public int? Salary { get; set; }
         public List<workOn>? WorksOnProjects { get; set; }
 
-        public List<dependents>? Dependents { get; set; }
+        public List<dependent>? Dependents { get; set; }
 
         public employee? SuperVisor { get; set; }
 
         public List<employee>? Employees { get; set; }
 
-        [ForeignKey("Department")]
-        public int? deptid { get; set; }
+        [ForeignKey("deptWork")]
+        public int? deptId_w { get; set; }
 
-        public Department? Department { get; set; }
 
-        public Department? Department2 { get; set; }
+
+        public virtual Department? deptWork { get; set; }
+        public virtual Department? deptManage { get; set; }
 
     }
 }

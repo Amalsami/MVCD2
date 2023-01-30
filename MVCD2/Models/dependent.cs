@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCD2.Models
 {
-    public class dependents
+    public class dependent
     {
 
         public int id { get; set; }
@@ -14,8 +14,8 @@ namespace MVCD2.Models
         public DateTime? BirthDate { get; set; }
         public string? Relationship { get; set; }
 
-        [ForeignKey("employee")]
-        public int ESSN { get; set; }
+        [ForeignKey("Employee")]
+        public int? ESSN { get; set; }
         public employee? Employee { get; set; }
     }
 }
